@@ -1,0 +1,107 @@
+# Event Reminder System
+
+A web-based application designed to help users manage their events efficiently with features like categorized event tracking (All, Personal, Work, Urgent), real-time updates, a responsive UI, and a dark mode toggle. Built with HTML, CSS, JavaScript, and a Java backend using Gradle.
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## Features
+- **Event Management**: Add, view, and delete events with priority levels (High, Medium, Low) and recurrence options.
+- **Categorized Events**: Filter events by All, Personal, Work, or Urgent categories.
+- **Real-Time Updates**: Periodic polling to refresh the event list automatically.
+- **Responsive Design**: Optimized for desktop and mobile devices with a dark mode toggle.
+- **Calendar View**: Placeholder for a future calendar integration (to be enhanced).
+
+## Installation
+
+### Prerequisites
+- **Git**: Install from [git-scm.com](https://git-scm.com/downloads).
+- **Java**: JDK 17 or higher (e.g., OpenJDK or Oracle JDK).
+- **Gradle**: Version 8.14.3 or compatible (bundled with the project).
+- **Node.js** (optional): For frontend development, though not required for this setup.
+- **Web Browser**: Modern browser (Chrome, Firefox, Edge) for running the app.
+
+### Steps
+1. **Clone the Repository**
+git clone https://github.com/your-username/Event-Reminder-System.git
+cd Event_Reminder_System
+
+2. **Install Dependencies**
+- No additional dependencies are required as Gradle handles backend dependencies.
+- Ensure the `.gradle` folder is ignored (handled by `.gitignore`).
+
+3. **Run the Backend**
+- Open a terminal in the project directory.
+- Start the server:
+./gradlew run
+- The backend will run on `http://localhost:8081`.
+
+4. **Run the Frontend**
+- In another terminal, navigate to the `web` folder:
+cd web
+python -m http.server 3000
+- Open `http://localhost:3000` in your browser.
+
+## Usage
+1. **Manage Events**
+- Add events using the form with a title, date/time, priority, and optional description.
+- Filter events by category (All, Personal, Work, Urgent) or sort them.
+- Delete events with the "Delete" button.
+
+2. **Toggle Dark Mode**
+- Click the "Theme" button in the header to switch between light and dark modes.
+
+3. **View Calendar**
+- The calendar view is a placeholder (to be enhanced later).
+
+## Project Structure
+Event_Reminder_System/
+├── src/              # Java backend source code
+│   ├── main/
+│   │   ├── java/
+│   │       ├── Main.java
+│   │       ├── event/         # Event-related classes
+│   │       ├── manager/       # Manager classes (e.g., NotificationService)
+│   │       ├── util/          # Utility classes (e.g., DateUtils)
+│   │       └── webserver/     # HTTP server (SimpleHttpServer)
+│   └── test/          # Test files
+├── web/              # Frontend source code
+│   ├── index.html    # Main event management page
+│   ├── css/          # Stylesheets
+│   └── js/           # JavaScript files
+├── build.gradle      # Gradle build configuration
+├── .gitignore        # Git ignore file
+└── README.md         # This file
+
+## Technologies Used
+- **Frontend**: HTML5, CSS3, JavaScript (ES6)
+- **Backend**: Java 17, Gradle 8.14.3
+- **Server**: Simple HTTP Server (custom implementation)
+- **Tools**: Git, GitHub
+
+## Contributing
+Contributions are welcome! To contribute:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/new-feature`).
+3. Make your changes and commit (`git commit -m "Add new feature"`).
+4. Push to the branch (`git push origin feature/new-feature`).
+5. Open a Pull Request on GitHub.
+
+Please adhere to the existing code style and include tests where applicable.
+
+## License
+This project is licensed under the [MIT License](LICENSE). See the `LICENSE` file for details (to be added).
+
+## Contact
+- **Author**: [Vanshikababral]
+- **Email**: [vanshikababral@gmail.com]
+- **GitHub**: [https://github.com/Vanshikababral]
+
+Feel free to open an issue or contact me for questions, suggestions, or collaboration!
