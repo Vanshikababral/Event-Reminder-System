@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your events with our accessible reminder system">
+    <title>Event Reminder System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="container">
+        <header role="banner" aria-labelledby="main-title">
+            <h1 id="main-title">Event Reminder System</h1>
+            <div class="next-event" aria-live="polite">
+                <h2>Next Event: <span id="nextEvent">None scheduled</span></h2>
+            </div>
+            <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle">
+                <span class="theme-icon">🌓</span>
+            </button>
+        </header>
+        
+        <main class="main-content" role="main">
+            <section class="event-form" aria-labelledby="form-title">
+                <h2 id="form-title">Add New Event</h2>
+                <form id="eventForm" aria-describedby="form-instructions">
+                    <p id="form-instructions" class="sr-only">Fill out this form to add a new event reminder</p>
+                    <div class="form-group">
+                        <label for="title">Event Title:*</label>
+                        <input type="text" id="title" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea id="description" rows="3" aria-describedby="desc-help"></textarea>
+                        <small id="desc-help" class="help-text">Optional description for your event</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateTime">Date & Time:*</label>
+                        <input type="datetime-local" id="dateTime" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority:</label>
+                        <select id="priority" aria-describedby="priority-help">
+                            <option value="HIGH">High</option>
+                            <option value="MEDIUM" selected>Medium</option>
+                            <option value="LOW">Low</option>
+                        </select>
+                        <small id="priority-help" class="help-text">Select the importance level</small>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="recurring" aria-describedby="recurring-help">
+                        <label for="recurring">Recurring Event</label>
+                        <small id="recurring-help" class="help-text">Check if this event repeats</small>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-icon">➕</span> Add Event
+                    </button>
+                </form>
+            </section>
+            
+            <section class="event-list" aria-labelledby="events-title">
+                <h2 id="events-title">Your Events</h2>
+                <div class="filter-controls">
+                    <label for="timeFilter" class="sr-only">Filter events by time</label>
+                    <select id="timeFilter" aria-label="Filter events">
+                        <option value="all">All Events</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                    <button id="sort-btn" class="btn-icon" aria-label="Sort events">
+                        <span class="sort-icon">🔃</span>
+                    </button>
+                </div>
+                <div id="eventsContainer" aria-live="polite">
+                    <!-- Events will be loaded here -->
+                </div>
+            </section>
+        </main>
+
+        <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+    </div>
+    
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
