@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +7,29 @@
     <title>Event Reminder System</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header role="banner" aria-labelledby="main-title">
-            <h1 id="main-title">Event Reminder System</h1>
-            <div class="next-event" aria-live="polite">
-                <h2>Next Event: <span id="nextEvent">None scheduled</span></h2>
+            <!-- NEW: Use a container to align logo, title, and controls -->
+            <div class="header-content">
+    <div class="logo">
+        <i class="fa-solid fa-bell-concierge"></i>
+    </div>
+    <h1 id="main-title">Event Reminder System</h1>
+    <div class="header-controls">
+        <a href="calendar.html" class="calendar-link" aria-label="Go to Calendar View">
+            <i class="fa-solid fa-calendar-days"></i>
+        </a>
+        <button id="logout-btn" class="logout-btn">Logout</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <span class="theme-icon">
+                <i class="fa-solid fa-moon"></i>
+            </span>
+        </button>
+    </div>
             </div>
-            <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle">
-                <span class="theme-icon">🌓</span>
-            </button>
         </header>
         
         <main class="main-content" role="main">
@@ -39,6 +51,14 @@
                         <input type="datetime-local" id="dateTime" required aria-required="true">
                     </div>
                     <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select id="category">
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="priority">Priority:</label>
                         <select id="priority" aria-describedby="priority-help">
                             <option value="HIGH">High</option>
@@ -53,13 +73,21 @@
                         <small id="recurring-help" class="help-text">Check if this event repeats</small>
                     </div>
                     <button type="submit" class="btn-primary">
-                        <span class="btn-icon">➕</span> Add Event
+                        <span class="btn-icon">
+                            <i class="fa-solid fa-plus"></i>
+                        </span> Add Event
                     </button>
                 </form>
             </section>
             
             <section class="event-list" aria-labelledby="events-title">
                 <h2 id="events-title">Your Events</h2>
+                <nav class="category-filters">
+                    <button class="filter-btn active" data-category="all" aria-pressed="true">All</button>
+                    <button class="filter-btn" data-category="Personal" aria-pressed="false">Personal</button>
+                    <button class="filter-btn" data-category="Work" aria-pressed="false">Work</button>
+                    <button class="filter-btn" data-category="Urgent" aria-pressed="false">Urgent</button>
+                </nav>
                 <div class="filter-controls">
                     <label for="timeFilter" class="sr-only">Filter events by time</label>
                     <select id="timeFilter" aria-label="Filter events">
@@ -69,18 +97,20 @@
                         <option value="month">This Month</option>
                     </select>
                     <button id="sort-btn" class="btn-icon" aria-label="Sort events">
-                        <span class="sort-icon">🔃</span>
+                        <span class="sort-icon">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </span>
                     </button>
                 </div>
                 <div id="eventsContainer" aria-live="polite">
-                    <!-- Events will be loaded here -->
                 </div>
             </section>
         </main>
 
         <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
     </div>
-    
+    <!-- Load the main application script -->
     <script src="js/app.js" type="module"></script>
+    <script src="js/theme.js" type="module"></script>
 </body>
 </html>

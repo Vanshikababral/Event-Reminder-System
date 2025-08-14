@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Event Reminder System
 
 A web-based application designed to help users manage their events efficiently with features like categorized event tracking (All, Personal, Work, Urgent), real-time updates, a responsive UI, and a dark mode toggle. Built with HTML, CSS, JavaScript, and a Java backend using Gradle.
@@ -105,3 +106,4 @@ This project is licensed under the [MIT License](LICENSE). See the `LICENSE` fil
 - **GitHub**: [https://github.com/Vanshikababral]
 
 Feel free to open an issue or contact me for questions, suggestions, or collaboration!
+=======

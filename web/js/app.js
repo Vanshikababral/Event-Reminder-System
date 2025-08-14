@@ -1,8 +1,20 @@
 const API_URL = "http://localhost:8081/api/events";
 
+// Utility function to get the authentication token
+function getAuthToken() {
+    return localStorage.getItem('authToken');
+}
+
+// Check if a user is authenticated
+function isAuthenticated() {
+    return !!getAuthToken();
+}
+
 class Toast {
     static show(message, type = 'info') {
         const toast = document.getElementById('toast');
+        if (!toast) return;
+
         toast.textContent = message;
         toast.className = 'toast show';
         
@@ -40,9 +52,14 @@ class EventService {
         }
     }
 
-    static async getAllEvents() {
+    static async getEventsByCategory(category = 'all') {
+        let url = API_URL;
+        if (category !== 'all') {
+            url += `?category=${category}`;
+        }
+        
         try {
-            const response = await fetch(API_URL);
+            const response = await fetch(url);
             if (!response.ok) throw new Error('Failed to fetch events');
             const events = await response.json();
             return events.map(event => ({
@@ -67,16 +84,15 @@ class EventService {
     }
 }
 
-// Convert datetime-local input to ISO format
 function formatDateTimeLocalToISO(dateTimeLocal) {
-    // Input: "YYYY-MM-DDTHH:mm" → Output: "YYYY-MM-DDTHH:mm:ssZ"
     return dateTimeLocal + ":00Z";
 }
 
 class EventRenderer {
     static renderEvents(events) {
         const container = document.getElementById('eventsContainer');
-        
+        if (!container) return;
+
         if (events.length === 0) {
             container.innerHTML = '<p class="no-events">No events found</p>';
             return;
@@ -113,39 +129,97 @@ class EventRenderer {
             </div>
         `;
     }
+}
 
-    static updateNextEvent(events) {
-        const element = document.getElementById('nextEvent');
-        if (events.length === 0) {
-            element.textContent = 'None scheduled';
-            return;
+class CalendarManager {
+    static async init() {
+        const calendarEl = document.getElementById('calendar');
+        if (!calendarEl) return;
+
+        this.setupCategoryFiltering();
+        await this.loadEvents();
+    }
+
+    static setupCategoryFiltering() {
+        const filters = document.querySelectorAll('.category-filters .filter-btn');
+        if (!filters) return;
+        
+        filters.forEach(button => {
+            button.addEventListener('click', async (e) => {
+                filters.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                const category = e.target.dataset.category;
+                await this.loadEvents(category);
+            });
+        });
+    }
+
+    static async loadEvents(category = 'all') {
+        const calendarEl = document.getElementById('calendar');
+        if (!calendarEl) return;
+
+        const events = await EventService.getEventsByCategory(category);
+        const formattedEvents = events.map(event => ({
+            id: event.id,
+            title: event.title,
+            start: event.eventTime,
+            color: this.getPriorityColor(event.priority)
+        }));
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: formattedEvents,
+            eventClick: function(info) {
+                alert(`Event: ${info.event.title}\nDate: ${info.event.startStr}`);
+            }
+        });
+        calendar.render();
+    }
+
+    static getPriorityColor(priority) {
+        switch (priority.toUpperCase()) {
+            case 'HIGH': return '#dc2626';
+            case 'MEDIUM': return '#f59e0b';
+            case 'LOW': return '#16a34a';
+            default: return '#2563eb';
         }
-        
-        const nextEvent = events.reduce((prev, curr) => 
-            prev.dateObject < curr.dateObject ? prev : curr);
-        
-        const options = {
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        };
-        
-        element.textContent = `${nextEvent.title} at ${nextEvent.dateObject.toLocaleString('en-US', options)}`;
     }
 }
 
 class EventManager {
     static async init() {
-        await this.loadEvents();
-        this.setupEventListeners();
-        this.startPolling(); // Start real-time updates
+        // Redirect to login page if not authenticated
+        if (!isAuthenticated()) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Setup logout button
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('authToken');
+                window.location.href = 'login.html';
+            });
+        }
+        
+        if (document.getElementById('eventsContainer')) {
+            await this.loadEvents();
+            this.setupEventListeners();
+            this.startPolling();
+        } else if (document.getElementById('calendar')) {
+            await CalendarManager.init();
+        }
     }
 
-    static async loadEvents() {
-        const events = await EventService.getAllEvents();
+    static async loadEvents(category = 'all') {
+        const events = await EventService.getEventsByCategory(category);
         EventRenderer.renderEvents(events);
-        EventRenderer.updateNextEvent(events);
     }
 
     static setupEventListeners() {
@@ -163,6 +237,18 @@ class EventManager {
                 await this.handleDeleteEvent(e.target.dataset.id);
             }
         });
+
+        document.querySelectorAll('.category-filters .filter-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                document.querySelectorAll('.category-filters .filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+                e.target.classList.add('active');
+                e.target.setAttribute('aria-pressed', 'true');
+                await this.loadEvents(e.target.dataset.category);
+            });
+        });
     }
 
     static async handleFormSubmit() {
@@ -172,7 +258,8 @@ class EventManager {
             description: form.description.value.trim(),
             eventTime: formatDateTimeLocalToISO(form.dateTime.value),
             priority: form.priority.value,
-            isRecurring: form.recurring.checked
+            isRecurring: form.recurring.checked,
+            category: form.category.value
         };
 
         if (!eventData.title || !eventData.eventTime) {
@@ -199,7 +286,7 @@ class EventManager {
     }
 
     static async handleFilterChange(filter) {
-        const events = await EventService.getAllEvents();
+        const events = await EventService.getEventsByCategory();
         const now = new Date();
         
         const filtered = events.filter(event => {
@@ -225,14 +312,13 @@ class EventManager {
     }
 
     static startPolling() {
-        // Poll every 10 seconds for real-time updates
         setInterval(async () => {
             try {
                 await this.loadEvents();
             } catch (error) {
                 console.error('Polling error:', error);
             }
-        }, 10000); // 10 seconds
+        }, 10000);
     }
 }
 

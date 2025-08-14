@@ -3,18 +3,28 @@ plugins {
     id 'application'
 }
 
-application{
-    mainClass = 'Main' // or 'your.package.Main' if Main is in a package
-}
+group = 'com.vanshikababral'
+version = '1.0-SNAPSHOT'
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
-    implementation 'com.sun.net.httpserver:http:20070405'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.16.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1'
+    
+    // Correct and reliable BCrypt dependency
+    implementation 'org.mindrot:jbcrypt:0.4'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+application {
+    mainClass = 'Main'
 }
 
 test {

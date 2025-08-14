@@ -1,0 +1,31 @@
+[ {
+  "id" : "EVT-d3c5b75c-acba-4e7e-9d3d-a2c90df65da7",
+  "title" : "Event 3",
+  "description" : "Another Demo Event",
+  "eventTime" : [ 2025, 8, 14, 17, 56 ],
+  "priority" : "MEDIUM",
+  "category" : "Personal",
+  "notified" : false,
+  "recurring" : false,
+  "formattedTime" : "2025-08-14 17:56"
+}, {
+  "id" : "EVT-2d65860a-c446-463c-8c9f-c8dc22ab33ff",
+  "title" : "Event 2",
+  "description" : "Another Demo Event",
+  "eventTime" : [ 2025, 8, 15, 17, 54 ],
+  "priority" : "MEDIUM",
+  "category" : "Work",
+  "notified" : false,
+  "recurring" : false,
+  "formattedTime" : "2025-08-15 17:54"
+}, {
+  "id" : "EVT-d9c58600-a516-473e-bbda-677640da0f12",
+  "title" : "Event 1",
+  "description" : "The demo event",
+  "eventTime" : [ 2025, 8, 14, 19, 56 ],
+  "priority" : "HIGH",
+  "category" : "Personal",
+  "notified" : false,
+  "recurring" : false,
+  "formattedTime" : "2025-08-14 19:56"
+} ]

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View your events in a calendar format">
+    <title>Calendar View - Event Reminder System</title>
+    
+    <!-- Link to your existing styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css">
+</head>
+<body>
+    <div class="container">
+        <header role="banner" aria-labelledby="main-title">
+            <h1 id="main-title">Calendar View</h1>
+            <div class="header-controls">
+                <h2>
+                    <button class="dashboard-link" onclick="window.location.href='index.html'">
+                        Go to Dashboard
+                    </button>
+                </h2>
+            </div>
+            <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle">
+                <span class="theme-icon">
+                    <i class="fa-solid fa-moon"></i>
+                </span>
+            </button>
+        </header>
+
+        <main class="main-content">
+            <section class="category-filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="Personal">Personal</button>
+                <button class="filter-btn" data-category="Work">Work</button>
+                <button class="filter-btn" data-category="Urgent">Urgent</button>
+            </section>
+            <div id="calendar"></div>
+        </main>
+
+        <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+    </div>
+    
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+    <!-- Your custom scripts -->
+    <script src="js/app.js" type="module"></script>
+    <script src="js/theme.js" type="module"></script>
+</body>
+</html>

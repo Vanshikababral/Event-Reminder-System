@@ -14,9 +14,11 @@ public class Event {
     private LocalDateTime eventTime;
     private EventPriority priority;
     private boolean isRecurring;
+    private String category;
+    private boolean isNotified; // NEW: Flag to track if a notification has been sent
 
     public Event(String title, String description, LocalDateTime eventTime, 
-                EventPriority priority, boolean isRecurring) {
+                 EventPriority priority, boolean isRecurring, String category) {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
@@ -26,11 +28,13 @@ public class Event {
         this.eventTime = eventTime;
         this.priority = priority;
         this.isRecurring = isRecurring;
+        this.category = category;
+        this.isNotified = false; // Initialize to false
     }
 
     private String generateId() {
-    return "EVT-" + UUID.randomUUID().toString();
-}
+        return "EVT-" + UUID.randomUUID().toString();
+    }
 
     // Getters
     public String getId() { return id; }
@@ -39,6 +43,13 @@ public class Event {
     public LocalDateTime getEventTime() { return eventTime; }
     public EventPriority getPriority() { return priority; }
     public boolean isRecurring() { return isRecurring; }
+    public String getCategory() { return category; }
+    public boolean isNotified() { return isNotified; } // NEW: Getter for the flag
+
+    // Setter
+    public void setNotified(boolean notified) {
+        isNotified = notified;
+    }
 
     public String getFormattedTime() {
         return eventTime.format(DATE_FORMAT);

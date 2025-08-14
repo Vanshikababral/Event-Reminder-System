@@ -2,4 +2,4 @@
 .gradle/
 *.class
 *.iml
-.idea/
+.idea/ 
